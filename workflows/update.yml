@@ -1,0 +1,21 @@
+name: Update OAS definitions
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 * * 0'
+jobs:
+  update-definitions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the client
+        run: make all
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          committer: GitHub <noreply@github.com>
+          author: actions-bot <actions-bot@users.noreply.github.com>
+          title: "[automation] Client updates (v2)"
+          branch: update-definitions-v2
+          token: ${{ secrets.PAT }}
